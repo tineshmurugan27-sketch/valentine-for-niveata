@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Niveata ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+#hearts {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.container {
+    margin-top: 80px;
+    padding: 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: #ff4d6d;
+    text-shadow: 0 0 20px #ff4d6d;
+    animation: glow 2s infinite alternate;
+}
+
+p {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.gallery img {
+    width: 240px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin: 15px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 2s forwards;
+}
+
+.gallery img:nth-child(2) {
+    animation-delay: 1s;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 18px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin: 20px;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    box-shadow: 0 0 15px #ff4d6d;
+}
+
+#yesBtn:hover {
+    transform: scale(1.1);
+}
+
+#noBtn {
+    background: white;
+    color: #ff4d6d;
+    position: absolute;
+}
+
+#message {
+    font-size: 28px;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #ff4d6d; }
+    to { text-shadow: 0 0 30px #ff4d6d; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="hearts"></canvas>
+
+<div class="container">
+    <h1>Will You Be My Valentine, Niveata? ❤️</h1>
+    <p>You are my today, my tomorrow, and every beautiful moment in between.</p>
+
+    <div class="gallery">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+    </div>
+
+    <div>
+        <button id="yesBtn" onclick="sayYes()">YES ❤️</button>
+        <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+    </div>
+
+    <div id="message"></div>
+</div>
+
+<!-- Background Music -->
+<audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Floating Hearts Animation
+const canvas = document.getElementById("hearts");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let hearts = [];
+for (let i = 0; i < 40; i++) {
+    hearts.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 5 + 2,
+        speed: Math.random() * 1 + 0.5
+    });
+}
+
+function drawHearts() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "pink";
+    hearts.forEach(h => {
+        ctx.beginPath();
+        ctx.arc(h.x, h.y, h.size, 0, Math.PI * 2);
+        ctx.fill();
+        h.y -= h.speed;
+        if (h.y < 0) h.y = canvas.height;
+    });
+    requestAnimationFrame(drawHearts);
+}
+drawHearts();
+
+function sayYes() {
+    document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
+    document.getElementById("message").innerHTML = 
+    "You just made me the happiest man alive ❤️ Forever starts now.";
+}
+
+function moveNo() {
+    const btn = document.getElementById("noBtn");
+    btn.style.top = Math.random() * window.innerHeight + "px";
+    btn.style.left = Math.random() * window.innerWidth + "px";
+}
+</script>
+
+</body>
+</html>
