@@ -1,69 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Niveata ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+<title>For My Valentine ❤️</title>
 
 <style>
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: Arial, sans-serif;
     background: black;
     color: white;
     text-align: center;
     overflow: hidden;
 }
 
-#hearts {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
 .container {
     margin-top: 80px;
-    padding: 20px;
-    animation: fadeIn 2s ease-in-out;
 }
 
 h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
+    font-size: 42px;
     color: #ff4d6d;
     text-shadow: 0 0 20px #ff4d6d;
-    animation: glow 2s infinite alternate;
-}
-
-p {
-    font-size: 20px;
-    margin-top: 20px;
 }
 
 .gallery img {
-    width: 240px;
+    width: 230px;
     height: 300px;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 15px;
     margin: 15px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUp 2s forwards;
-}
-
-.gallery img:nth-child(2) {
-    animation-delay: 1s;
 }
 
 button {
-    padding: 15px 35px;
+    padding: 15px 30px;
     font-size: 18px;
     border: none;
-    border-radius: 40px;
+    border-radius: 30px;
     cursor: pointer;
     margin: 20px;
     transition: 0.3s;
@@ -72,7 +47,6 @@ button {
 #yesBtn {
     background: #ff4d6d;
     color: white;
-    box-shadow: 0 0 15px #ff4d6d;
 }
 
 #yesBtn:hover {
@@ -85,27 +59,16 @@ button {
     position: absolute;
 }
 
-#message {
-    font-size: 28px;
+#afterYes {
+    display: none;
     margin-top: 30px;
-    font-weight: bold;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px #ff4d6d; }
-    to { text-shadow: 0 0 30px #ff4d6d; }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 </style>
 </head>
@@ -115,7 +78,7 @@ button {
 <canvas id="hearts"></canvas>
 
 <div class="container">
-    <h1>Will You Be My Valentine, Niveata? ❤️</h1>
+    <h1>Will You Be My Valentine? ❤️</h1>
     <p>You are my today, my tomorrow, and every beautiful moment in between.</p>
 
     <div class="gallery">
@@ -128,16 +91,32 @@ button {
         <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
     </div>
 
-    <div id="message"></div>
+    <div id="afterYes">
+        <h2>YAYYYYY ❤️🥹</h2>
+        <p>You just made me the happiest man alive. Forever starts now.</p>
+    </div>
 </div>
 
-<!-- Background Music -->
 <audio autoplay loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// Floating Hearts Animation
+// YES button
+function sayYes() {
+    document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
+    document.getElementById("afterYes").style.display = "block";
+    alert("She said YES ❤️");
+}
+
+// NO button moves
+function moveNo() {
+    const btn = document.getElementById("noBtn");
+    btn.style.top = Math.random() * window.innerHeight + "px";
+    btn.style.left = Math.random() * window.innerWidth + "px";
+}
+
+// Floating hearts
 const canvas = document.getElementById("hearts");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -153,7 +132,7 @@ for (let i = 0; i < 40; i++) {
     });
 }
 
-function drawHearts() {
+function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "pink";
     hearts.forEach(h => {
@@ -163,21 +142,9 @@ function drawHearts() {
         h.y -= h.speed;
         if (h.y < 0) h.y = canvas.height;
     });
-    requestAnimationFrame(drawHearts);
+    requestAnimationFrame(draw);
 }
-drawHearts();
-
-function sayYes() {
-    document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
-    document.getElementById("message").innerHTML = 
-    "You just made me the happiest man alive ❤️ Forever starts now.";
-}
-
-function moveNo() {
-    const btn = document.getElementById("noBtn");
-    btn.style.top = Math.random() * window.innerHeight + "px";
-    btn.style.left = Math.random() * window.innerWidth + "px";
-}
+draw();
 </script>
 
 </body>
