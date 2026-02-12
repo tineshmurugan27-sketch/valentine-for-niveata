@@ -6,70 +6,50 @@
 <title>For My Valentine ❤️</title>
 
 <style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: black;
-    color: white;
-    text-align: center;
-    overflow: hidden;
+body{
+  margin:0; padding:0;
+  font-family: Arial, sans-serif;
+  background:black; color:white;
+  text-align:center;
+  overflow:hidden;
 }
-
-.container {
-    margin-top: 80px;
+.container{ margin-top:80px; padding:20px; }
+h1{
+  font-size:42px;
+  color:#ff4d6d;
+  text-shadow:0 0 20px #ff4d6d;
 }
-
-h1 {
-    font-size: 42px;
-    color: #ff4d6d;
-    text-shadow: 0 0 20px #ff4d6d;
+.gallery img{
+  width:230px; height:300px;
+  object-fit:cover;
+  border-radius:15px;
+  margin:15px;
 }
-
-.gallery img {
-    width: 230px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin: 15px;
+button{
+  padding:15px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  margin:20px;
+  transition:0.2s;
 }
-
-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    margin: 20px;
-    transition: 0.3s;
+#yesBtn{ background:#ff4d6d; color:white; }
+#yesBtn:hover{ transform:scale(1.06); }
+#noBtn{
+  background:white; color:#ff4d6d;
+  position:absolute;
 }
+#afterYes{ display:none; margin-top:30px; font-size:22px; }
+canvas{ position:fixed; top:0; left:0; z-index:-1; }
 
-#yesBtn {
-    background: #ff4d6d;
-    color: white;
-}
-
-#yesBtn:hover {
-    transform: scale(1.1);
-}
-
-#noBtn {
-    background: white;
-    color: #ff4d6d;
-    position: absolute;
-}
-
-#afterYes {
-    display: none;
-    margin-top: 30px;
-    font-size: 24px;
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
+/* Music helper button */
+#musicHint{
+  display:none;
+  margin-top:15px;
+  background:#ffffff;
+  color:#ff4d6d;
+  box-shadow:0 0 15px rgba(255,77,109,0.5);
 }
 </style>
 </head>
@@ -79,44 +59,70 @@ canvas {
 <canvas id="hearts"></canvas>
 
 <div class="container">
-    <h1>Will You Be My Valentine? ❤️</h1>
-    <p>You are my today, my tomorrow, and every beautiful moment in between.</p>
+  <h1>Will You Be My Valentine? ❤️</h1>
+  <p>You are my today, my tomorrow, and every beautiful moment in between.</p>
 
-    <div class="gallery">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-    </div>
+  <div class="gallery">
+    <img src="photo1.jpg" alt="Us photo 1">
+    <img src="photo2.jpg" alt="Us photo 2">
+  </div>
 
-    <div>
-        <button id="yesBtn" onclick="sayYes()">YES ❤️</button>
-        <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
-    </div>
+  <div>
+    <button id="yesBtn" onclick="sayYes()">YES ❤️</button>
+    <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+  </div>
 
-    <div id="afterYes">
-        <h2>YAYYYYY ❤️🥹</h2>
-        <p>You just made me the happiest man alive. Forever starts now.</p>
-    </div>
+  <button id="musicHint" onclick="forcePlay()">Tap to start music 🎵</button>
+
+  <div id="afterYes">
+    <h2>YAYYYYY ❤️🥹</h2>
+    <p>You just made me the happiest man alive. Forever starts now.</p>
+  </div>
 </div>
 
-<audio id="bgm" loop>
-    <source src="music.mp3" type="audio/mpeg">
+<audio id="bgm" preload="auto" loop>
+  <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// YES button
-function sayYes() {
-    document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
-    document.getElementById("afterYes").style.display = "block";
+const bgm = document.getElementById("bgm");
+const musicHint = document.getElementById("musicHint");
 
-    const music = document.getElementById("bgm");
-    music.play();
+// Try play and show helper if blocked
+function tryPlay() {
+  bgm.currentTime = 0;
+  const p = bgm.play();
+  if (p && typeof p.catch === "function") {
+    p.catch(() => {
+      // show manual button if blocked
+      musicHint.style.display = "inline-block";
+    });
+  }
 }
 
-// NO button moves
+// Manual play button
+function forcePlay() {
+  musicHint.style.display = "none";
+  tryPlay();
+}
+
+function sayYes() {
+  document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
+  document.getElementById("afterYes").style.display = "block";
+  tryPlay();
+}
+
+// Backup: any next click will start music once
+document.addEventListener("click", () => {
+  if (bgm.paused) tryPlay();
+}, { once: true });
+
 function moveNo() {
-    const btn = document.getElementById("noBtn");
-    btn.style.top = Math.random() * window.innerHeight + "px";
-    btn.style.left = Math.random() * window.innerWidth + "px";
+  const btn = document.getElementById("noBtn");
+  const x = Math.random() * (window.innerWidth - 140);
+  const y = Math.random() * (window.innerHeight - 140);
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
 }
 
 // Floating hearts
@@ -126,28 +132,34 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let hearts = [];
-for (let i = 0; i < 40; i++) {
-    hearts.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 5 + 2,
-        speed: Math.random() * 1 + 0.5
-    });
+for (let i=0; i<40; i++){
+  hearts.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*5 + 2,
+    speed: Math.random()*1 + 0.5
+  });
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "pink";
-    hearts.forEach(h => {
-        ctx.beginPath();
-        ctx.arc(h.x, h.y, h.size, 0, Math.PI * 2);
-        ctx.fill();
-        h.y -= h.speed;
-        if (h.y < 0) h.y = canvas.height;
-    });
-    requestAnimationFrame(draw);
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "pink";
+  hearts.forEach(h=>{
+    ctx.beginPath();
+    ctx.arc(h.x,h.y,h.size,0,Math.PI*2);
+    ctx.fill();
+    h.y -= h.speed;
+    if(h.y < 0) h.y = canvas.height;
+  });
+  requestAnimationFrame(draw);
 }
 draw();
+
+// Resize safe
+window.addEventListener("resize", ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 </script>
 
 </body>
