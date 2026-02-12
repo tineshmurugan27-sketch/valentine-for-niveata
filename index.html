@@ -62,6 +62,7 @@ button {
 #afterYes {
     display: none;
     margin-top: 30px;
+    font-size: 24px;
 }
 
 canvas {
@@ -97,7 +98,7 @@ canvas {
     </div>
 </div>
 
-<audio autoplay loop>
+<audio id="bgm" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -106,7 +107,9 @@ canvas {
 function sayYes() {
     document.body.style.background = "linear-gradient(to right, #ff4d6d, #ff99ac)";
     document.getElementById("afterYes").style.display = "block";
-    alert("She said YES ❤️");
+
+    const music = document.getElementById("bgm");
+    music.play();
 }
 
 // NO button moves
